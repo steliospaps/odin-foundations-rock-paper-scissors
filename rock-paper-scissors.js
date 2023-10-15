@@ -35,7 +35,28 @@ function playRound( playerSelection, computerSelection){
 
 }
 
-const playerSelection = "rock";
-const computerSelection = getComputerChoice();
-console.log(playRound(playerSelection, computerSelection));
+
+function game(){
+  let userScore=0;
+  
+  for(i=0;i<5;i++){
+    const input = prompt("Rock,Paper or Scissors?");
+    const outcome = playRound(input,getComputerChoice())
+    if(outcome.startsWith('You Win')){
+      userScore+=1;
+    } else if(outcome.startsWith('You Lose')){
+      userScore-=1;
+    }
+    console.log(outcome+" score: "+userScore);
+  }
+  if(userScore>0){
+    return "You Won!";
+  }else if(userScore<0){
+    return "You Lost!";
+  }else {
+    return "You Tied!";
+  }
+}
+
+console.log(game());
 
