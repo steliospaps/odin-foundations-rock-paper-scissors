@@ -6,6 +6,7 @@ function getComputerChoice(){
 
 
 function playRound( playerSelection, computerSelection){
+  console.log("playRound "+playerSelection+" "+computerSelection);
   const playerSelectionLc=playerSelection.toLowerCase();
   const computerSelectionLc=computerSelection.toLowerCase();
   if(playerSelectionLc === computerSelectionLc){
@@ -35,28 +36,42 @@ function playRound( playerSelection, computerSelection){
 
 }
 
-
-function game(){
-  let userScore=0;
-  
-  for(i=0;i<5;i++){
-    const input = prompt("Rock,Paper or Scissors?");
-    const outcome = playRound(input,getComputerChoice())
-    if(outcome.startsWith('You Win')){
-      userScore+=1;
-    } else if(outcome.startsWith('You Lose')){
-      userScore-=1;
-    }
-    console.log(outcome+" score: "+userScore);
+let userScore=0;
+let computerScore=0;
+let round=0;
+function playRoundUi(userChoice){
+  if(round>=5){
+    return;
   }
-  if(userScore>0){
-    return "You Won!";
-  }else if(userScore<0){
-    return "You Lost!";
-  }else {
-    return "You Tied!";
+  const historyList=document.querySelector('#hList');
+  const results=document.querySelector('#result');
+  const outcome = playRound(userChoice,getComputerChoice())
+  
+  round+=1;
+  
+  if(outcome.startsWith('You Win')){
+    userScore+=1;
+  } else if(outcome.startsWith('You Lose')){
+    computerScore+=1;
+  }
+  const li = document.createElement('li');
+  li.textContent=outcome;
+  historyList.appendChild(li);
+  console.log(`${outcome} You: ${userScore} Computer: ${computerScore}`);
+  if(round==5){
+    if(userScore>computerScore){
+      results.textContent=`You Win! ${userScore}-${computerScore}`;
+    }else if(userScore<computerScore){
+      results.textContent=`You Lose! ${userScore}-${computerScore}`;
+    }else{
+      results.textContent=`You Tie! ${userScore}-${computerScore}`;
+    }
+  }else{
+    results.textContent=`You: ${userScore} Computer: ${computerScore}`;
   }
 }
 
-console.log(game());
+document.querySelector("#rock").addEventListener('click',()=>playRoundUi('Rock'));
+document.querySelector("#paper").addEventListener('click',()=>playRoundUi('Paper'));
+document.querySelector("#scissors").addEventListener('click',()=>playRoundUi('Scissors'));
 
